@@ -58,7 +58,7 @@ We aim to write a separate manuscript that focuses on software and pipeline deve
 #### Generate results
 
 - step5_resAna_all.R: Reproduce results in Figure 3 and Supplementary Figure 14.
-- smmry_res/: Due to file upload size limitations, this folder only contains 20 results generated from step5_resAna_all.R.
+- smmry_res/: The results generated from step5_resAna_all.R.
 
 #### Support files
 
