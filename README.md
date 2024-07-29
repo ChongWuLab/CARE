@@ -1,4 +1,5 @@
 # CARE
+
 Classical MR analyses utilizing summary data may still produce biased causal effect estimates due to the the winner’s curse and pleiotropic issues. To address these two issues and establish valid causal conclusions, we propose a unified robust Mendelian Randomization framework with summary data, which systematically removes the winner’s curse and screens out invalid genetic instruments
 with pleiotropic effects. 
 
@@ -21,10 +22,16 @@ We aim to write a separate manuscript that focuses on software and pipeline deve
 
 ## Simulation
 - simulation_dir_pleio.R: Generate simulation results for the main setting.
-- simulation_dir_pleio2.R: Generate simulation results for normally distributed effects for alpha.
+- simulation_dir_pleio2.R: Generate simulation results for uniform distributed effects for alpha.
 - simulation_balance_pleio.R: Generate simulation results for balanced horizontal pleiotropy with InSIDE assumption satisfied.
 - simulation_balance_pleio2.R: Generate simulation results for directional horizontal pleiotropy wih InSIDE assumption violated.
-- Support files: CARE_support.R, CARE_support2.R, mr_raps_own.R, mr_lasso_own.R, cML_support.R, CARE_support_measurement_with_CD2.cpp, CARE_support_measurement_overlap.cpp, cML_support.cpp
+- simulation_nonlinear.R: Generate simulation results for nonlinear X on G without interaction term. 
+- simulation_nonlinear2.R: Generate simulation results for nonlinear X on G with interaction term. 
+- simulation_nonlinear3.R: Generate simulation results for nonlinear Y on X without interaction term.
+- simulation_dir_pleio3.R/simulation_dir_pleio7.R: Generate simulation results for GBIC.
+- simulation_dir_pleio5.R/simulation_dir_pleio6.R: Generate simulation results for three samples under the main setting.
+- simulalation_dir_pleio8.R: Generate simulation results for different sample sizes of SNPs.
+- Support files: CARE_support.R, CARE_support2.R, CARE_support3.R, mr_raps_own.R, mr_lasso_own.R, cML_support.R, CARE_support_measurement_with_CD2.cpp, CARE_support_measurement_with_CD2_2.cpp, CARE_support_measurement_overlap.cpp, cML_support.cpp
 - /pbs: generate lsf files used for parallel computing.
 
 ### Figure 2 (Main setting)
@@ -36,9 +43,12 @@ We aim to write a separate manuscript that focuses on software and pipeline deve
 
 - resAna/summarize_simRes_final.R: Generate summary results.
 - resAna/simulation_supplementary_figure.R: Reproduce results in Supplementary Figure 1.
-- resAna/simulation_figure2.R: Reproduce results in Supplementary Figure 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13.
+- resAna/simulation_figure2.R: Reproduce results in Supplementary Figure 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13,16,17,18.
+- resAna/simulation_figure3.R: Reproduce results in Supplementary Figure 19, 20, 21, 22, 23.
+- resAna/simulation_supplementray_eta_figure.R: Reproduce results in Supplementary Figure 14.
+- resAna/simulation_supplementray_gic_figure.R: Reproduce results in Supplementary Figure 15.
 - resAna/summarize_simRes_computational_time_setting: Generate summary results for running time.
-- resAna/simulation_supplementary_figure_runtime.R: Reproduce results in Supplementary Figure 5.
+- resAna/simulation_supplementary_figure_runtime.R: Reproduce results in Supplementary Figure 4.
 
 
 
@@ -58,7 +68,7 @@ We aim to write a separate manuscript that focuses on software and pipeline deve
 #### Generate results
 
 - step5_resAna_all.R: Reproduce results in Figure 3 and Supplementary Figure 14.
-- smmry_res/: The results generated from step5_resAna_all.R.
+- smmry_res/: Due to file upload size limitations, this folder only contains 20 results generated from step5_resAna_all.R.
 
 #### Support files
 
