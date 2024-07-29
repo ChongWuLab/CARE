@@ -2,11 +2,8 @@
 # Summary level simulations with directional pleiotropy and InSIDE assumption violated
 #rm(list = ls())
 
-#setwd("C:\\Users\\Evelyn\\OneDrive - The University of Texas Health Science Center at Houston\\Wu group\\MR\\codes\\simulation-final\\")
-#!/usr/bin/env Rscript
-#slurm_arrayid <- Sys.getenv('SLURM_ARRAY_TASK_ID')
-#job.id <- as.numeric(slurm_arrayid)
-#library(rapportools)
+setwd("/rsrch5/home/biostatistics/chongwulab/wzhang24/CARE/simulation_final_2")
+
 require(mr.divw)
 require(nleqslv)
 
@@ -34,7 +31,7 @@ library(mvtnorm)
 #install_github("tye27/mr.divw")
 #create output:
 save_datdir = getwd()
-save_datdir = paste(save_datdir,"/simRes1/",sep="")
+save_datdir = paste(save_datdir,"/simRes14/",sep="")
 system(paste("mkdir -p ",save_datdir,sep=""))
 
 
@@ -73,6 +70,8 @@ if(Nin == "N1") {
     indx3 = 2
 } else if (Nin == "N3") {
     indx3 = 3
+} else if (Nin == "N4") {
+    indx3 = 4
 } else if (Nin == "N5") {
     indx3 = 5
 } else if (Nin == "N6") {
@@ -87,10 +86,11 @@ if(PropInvalidIn == "Prop1") {
     indx4 = 3
 }
 
+# job.id = 1; indx1 = 1; indx2 = 1; indx3 = 5; indx4 = 2
 #thetavec = c(0.2,0.1, 0.05, 0, -0.05, -0.1, -0.2)
 thetavec = c(0.1, 0.07, 0.03, 0, -0.03,-0.07, -0.1)
 thetaUvec = c(0.3, 0.5)
-Nvec = c(5e4, 8e4, 1e5, 1.5e5, 2.5e5, 5e5, 1e6) # 1:7
+Nvec = c(5000, 1e4, 5e4, 1e5, 5e5, 1e6) # 1:7
 prop_invalid_vec = c(0.3, 0.5, 0.7)
 
 #temp = as.integer(commandArgs(trailingOnly = TRUE))
@@ -105,7 +105,7 @@ prop_invalid = prop_invalid_vec[temp[4]] # Proportion of invalid IVs
 pthr = 5e-8 # p-value threshold for instrument selection
 pthr2 = 5e-5
 NxNy_ratio = 1 # Ratio of sample sizes for X and Y
-M = 2e5 # Total number of independent SNPs representing the common variants in the genome
+M = 2e4 # Total number of independent SNPs representing the common variants in the genome
 
 # Model parameters for effect size distribution
 pi1=0.02*(1-prop_invalid); pi3=0.01
@@ -170,8 +170,8 @@ for(sim.ind in simulation.ind.set)
         ind2 = ind2all[1:floor(length(ind2) * 0.5)]
         phi[ind2] = rnorm(length(ind2), mean = 0, sd = sqrt(sigma2u))
         
-        alpha[ind2] = runif(length(ind2),0.01,0.03)
-
+        alpha[ind2] = rnorm(length(ind2), mean = 0.015, sd = sqrt(sigma2u))
+        
         ind2 = ind2all[!ind2all %in% ind2]
         alpha[ind2] = rnorm(length(ind2), mean = 0, sd = sqrt(sigma2y_td))
         
@@ -179,41 +179,91 @@ for(sim.ind in simulation.ind.set)
         
         alpha[ind3] = rnorm(length(ind3), mean = 0, sd = sqrt(sigma2y)) #0.005
         
+        ### For causalsnps generate individual-level data
+        Eu <- rnorm(nx, mean = 0, sd = sqrt(sigma2u))
+        Ex <- rnorm(nx, mean = 0, sd = sqrt(sigma2x))
+        Ey <- rnorm(nx, mean = 0, sd = sqrt(sigma2y))
+        # 1. generate snps
+        n_snps = length(causalsnps)
+        maf = runif(n_snps, 0.01, 0.5)
+        G <- matrix(nrow = nx, ncol = n_snps)
+        for (j in 1:n_snps) {
+            G[, j] <- rbinom(nx, size = 2, prob = maf[j])
+        }
+        # 2. generate unmeasured confounder U
+        U <- G %*% phi[causalsnps] + Eu
+
+        # 3. generate exposure X
+        X <- G %*% gamma[causalsnps] + thetaUx * U + Ex
+
+        # 3. generate outcome Y
+        Y <- theta * X^2 + thetaU * U + G %*% alpha[causalsnps] + Ey
+
         # Generate summary statistics directly from summary-level model implied by individual-level model
         betax = gamma + thetaUx*phi
-        betay = alpha + theta*betax + thetaU*phi
-            
-        
+        betay = alpha + theta*betax + thetaU*phi   
         betahat_x = betax + rnorm(M, mean = 0, sd = sqrt(1/nx))
         betahat_y = betay + rnorm(M, mean = 0, sd = sqrt(1/ny))
-        betahat_xgold = betax + rnorm(M, mean = 0, sd = sqrt(1/nx))
-        
+        #betahat_xgold = betax + rnorm(M, mean = 0, sd = sqrt(1/nx))
+
+        tmp_betahat_x = rep(0,n_snps)
+        tmp_betahat_y = rep(0,n_snps)
+
+        X_centered <- scale(X, scale = TRUE) # Center X to remove the intercept
+        G_centered <- scale(G, scale = TRUE) # Center G to remove the intercept
+        tmp_betahat_x <- colSums(G_centered * as.vector(X_centered)) / colSums(G_centered^2)
+
+        # Calculate betahat_y based on linear regression
+        Y_centered <- scale(Y, scale = TRUE) # Center Y to remove the intercept
+        tmp_betahat_y <- colSums(G_centered * as.vector(Y_centered)) / colSums(G_centered^2)
+
+        # Predictions based on the betahats
+        predicted_X <- G_centered %*% tmp_betahat_x
+        predicted_Y <- G_centered %*% tmp_betahat_y
+
+        # Residuals
+        residuals_x <- X_centered - predicted_X
+        residuals_y <- Y_centered - predicted_Y
+
+        # Variance of residuals
+        sigma2_hat_x <- sum(residuals_x^2) / (nx - 1)
+        sigma2_hat_y <- sum(residuals_y^2) / (ny - 1)
+
+        # Standard errors
         se_x = rep(sqrt(1/nx),M)
         se_y = rep(sqrt(1/ny),M)
-        se_xgold = rep(sqrt(1/nx),M)
-        
+        se_x[causalsnps] = sqrt(sigma2_hat_x / colSums(G_centered^2))
+        se_y[causalsnps] = sqrt(sigma2_hat_y / colSums(G_centered^2))
+        #se_xgold = rep(sqrt(1/nx),M)
+        betahat_x[causalsnps] = tmp_betahat_x
+        betahat_y[causalsnps] = tmp_betahat_y
+
         ind_filter = which(2*pnorm(-sqrt(nx)*abs(betahat_x))<pthr)
         ind_filter_2 = which(2*pnorm(-sqrt(nx)*abs(betahat_x))<pthr2)
-        
+
         numIV = length(ind_filter)
         numIV2 = length(ind_filter_2)
         weakIV = which(2*pnorm(-sqrt(nx)*abs(betahat_x))<5e-8 & 2*pnorm(-sqrt(nx)*abs(betahat_x))>5e-10)
         weakIV = length(weakIV)
-        # calculate the statistics for this simulation setting:
-        hertx = sum(betax^2)
-        herty = sum(betay^2)
-        
+        # calculate heritability for X and Y
+        TSS <- sum((X_centered - mean(X_centered))^2)
+        RSS <- sum((X_centered - predicted_X)^2)
+        hertx <- 1 - (RSS / TSS)
+        TSS <- sum((Y_centered - mean(Y_centered))^2)
+        RSS <- sum((Y_centered - predicted_Y)^2)
+        herty <- 1 - (RSS / TSS)
+
         # F statistics
-        kappa = sum(betax^2/se_x^2)/length(betax)
-        kappa.sel = sum(betax[ind_filter]^2/se_x[ind_filter]^2)/length(betax[ind_filter])
+        #kappa = sum(betax^2/se_x^2)/length(betax)
+        #kappa.sel = sum(betax[ind_filter]^2/se_x[ind_filter]^2)/length(betax[ind_filter])
         
-        F = sum(betahat_x[ind_filter]^2/se_x[ind_filter]^2)/length(betahat_x[ind_filter]) - 1
-        varX = sum(betax[ind_filter]^2)
-        varY = sum(betay[ind_filter]^2)
+        #F = sum(betahat_x[ind_filter]^2/se_x[ind_filter]^2)/length(betahat_x[ind_filter]) - 1
+        #varX = sum(betax[ind_filter]^2)
+        #varY = sum(betay[ind_filter]^2)
+
+        sim.setting = c(numIV,weakIV)
         
-        sim.setting = c(numIV,weakIV,hertx,herty,kappa,kappa.sel,F,varX,varY)
-        
-        names(sim.setting) = c("nIV","nWeakIV","hertX","hertY","Kapp","KappSel","F","varX","varY")
+        names(sim.setting) = c("nIV","nWeakIV")
 
         tmpj = tmpj + 1
         cat('numIV:', numIV,'numIV2:',numIV2,'\n')
@@ -425,12 +475,17 @@ for(sim.ind in simulation.ind.set)
         r_g = cor(betahat_x[!seq_along(betahat_x) %in% ind_filter_2],betahat_y[!seq_along(betahat_x) %in% ind_filter_2])
         rho_g = r_g * sqrt(hertx) * sqrt(herty)
         Omega = matrix(c(hertx,rho_g,rho_g,herty)/M,2,2)
-        MRAPSS_res = MRAPSS(MRdata,
-                            exposure="X",
-                            outcome= "Y",
-                            C = C,
-                            Omega =  Omega ,
-                            Cor.SelectionBias = T)
+        MRAPSS_res <- tryCatch({
+            MRAPSS(MRdata,
+                exposure = "X",
+                outcome = "Y",
+                C = C,
+                Omega = Omega,
+                Cor.SelectionBias = TRUE)
+        }, error = function(e) {
+            # If an error occurs, return NULL
+            NULL
+        })
         MRAPSS_sim_result = c(MRAPSS_sim_result, list(MRAPSS_res = MRAPSS_res))
         run.time = c(run.time,proc.time()[3] - start.time)
         

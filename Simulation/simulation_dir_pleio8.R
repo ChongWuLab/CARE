@@ -7,6 +7,7 @@
 #slurm_arrayid <- Sys.getenv('SLURM_ARRAY_TASK_ID')
 #job.id <- as.numeric(slurm_arrayid)
 #library(rapportools)
+setwd("/rsrch5/home/biostatistics/chongwulab/wzhang24/CARE/simulation_final_2")
 require(mr.divw)
 require(nleqslv)
 
@@ -34,7 +35,7 @@ library(mvtnorm)
 #install_github("tye27/mr.divw")
 #create output:
 save_datdir = getwd()
-save_datdir = paste(save_datdir,"/simRes1/",sep="")
+save_datdir = paste(save_datdir,"/simRes13/",sep="")
 system(paste("mkdir -p ",save_datdir,sep=""))
 
 
@@ -58,8 +59,9 @@ indx1 <- as.numeric(args[[1]])
 thetaU <- (as.character(args[[2]]))
 Nin <- (as.character(args[[3]]))
 PropInvalidIn <- (as.character(args[[4]]))
+Min <- (as.character(args[[5]]))
 
-job.id <- as.numeric(args[[5]])
+job.id <- as.numeric(args[[6]])
 
 if(thetaU == "thetaU1") {
     indx2 = 1
@@ -73,10 +75,14 @@ if(Nin == "N1") {
     indx3 = 2
 } else if (Nin == "N3") {
     indx3 = 3
+} else if (Nin == "N4") {
+    indx3 = 4
 } else if (Nin == "N5") {
     indx3 = 5
 } else if (Nin == "N6") {
     indx3 = 6
+} else if (Nin == "N7") {
+    indx3 = 7
 }
 
 if(PropInvalidIn == "Prop1") {
@@ -87,32 +93,53 @@ if(PropInvalidIn == "Prop1") {
     indx4 = 3
 }
 
+if (Min == "M1") {
+    indx5 = 1
+} else if (Min == "M2") {
+    indx5 = 2
+} else if (Min == "M3") {
+    indx5 = 3
+} else if (Min == "M4") {
+    indx5 = 4
+} else if (Min == "M5") {
+    indx5 = 5
+} else if (Min == "M6") {
+    indx5 = 6
+}
+
+
 #thetavec = c(0.2,0.1, 0.05, 0, -0.05, -0.1, -0.2)
 thetavec = c(0.1, 0.07, 0.03, 0, -0.03,-0.07, -0.1)
 thetaUvec = c(0.3, 0.5)
 Nvec = c(5e4, 8e4, 1e5, 1.5e5, 2.5e5, 5e5, 1e6) # 1:7
 prop_invalid_vec = c(0.3, 0.5, 0.7)
+Mvec = c(1000,5000,10000,50000,1e5,2e5)
 
 #temp = as.integer(commandArgs(trailingOnly = TRUE))
-temp = c(indx1,indx2,indx3,indx4)###
+#indx1 =1; indx2 = 1; indx3 = 6; indx4 = 2; indx5 = 5
+temp = c(indx1,indx2,indx3,indx4,indx5)###
 
 #temp = c(3,1,6,1)#
 theta = thetavec[temp[1]] # True causal effect from X to Y
 thetaU = thetaUx = thetaUvec[temp[2]] # Effect of the confounder on Y/X
 N = Nvec[temp[3]] # Sample size for exposure X
 prop_invalid = prop_invalid_vec[temp[4]] # Proportion of invalid IVs
+M = Mvec[temp[5]] # Total number of independent SNPs
 
 pthr = 5e-8 # p-value threshold for instrument selection
 pthr2 = 5e-5
 NxNy_ratio = 1 # Ratio of sample sizes for X and Y
-M = 2e5 # Total number of independent SNPs representing the common variants in the genome
+#M = 2e5 # Total number of independent SNPs representing the common variants in the genome
 
 # Model parameters for effect size distribution
 pi1=0.02*(1-prop_invalid); pi3=0.01
 pi2=0.02*prop_invalid;
-sigma2x = sigma2y = 1e-5; sigma2u = 1e-5; sigma2x_td = sigma2y_td = 1e-5 - thetaU*thetaUx*sigma2u
+sigma2x = 1e-4
+sigma2y = 1e-5; sigma2u = 1e-5
+sigma2x_td = 1e-4 - thetaU*thetaUx*sigma2u
+sigma2y_td = 1e-5 - thetaU*thetaUx*sigma2u
 
-print(paste("N", N, "pthr", pthr, "pi1", pi1, "theta", theta, "thetaU", thetaU, "prop_invalid", prop_invalid, "NxNy_ratio", NxNy_ratio))
+print(paste("N", N, "pthr", pthr, "pi1", pi1, "theta", theta, "thetaU", thetaU, "prop_invalid", prop_invalid, "M",M,"NxNy_ratio", NxNy_ratio))
 
 nx = N; ny = N/NxNy_ratio
 
@@ -474,4 +501,4 @@ save(list = c("care_sim_result",
 "setting"),
 file = paste(save_datdir,"simres_MRMethods",set.ind,"N", N, "pthr", pthr,
 "pi1", pi1, "theta", theta, "thetaU", thetaU,
-"prop_invalid", prop_invalid, "NxNy_ratio", NxNy_ratio,".Rdata",sep=""))
+"prop_invalid", prop_invalid, "M",M,"NxNy_ratio", NxNy_ratio,".Rdata",sep=""))

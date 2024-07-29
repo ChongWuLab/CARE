@@ -31,7 +31,7 @@ library(mvtnorm)
 
 #create output:
 save_datdir = getwd()
-save_datdir = paste(save_datdir,"/simRes2/",sep="")
+save_datdir = paste(save_datdir,"/simRes11/",sep="")
 system(paste("mkdir -p ",save_datdir,sep=""))
 
 
@@ -56,6 +56,7 @@ thetaU <- (as.character(args[[2]]))
 Nin <- (as.character(args[[3]]))
 PropInvalidIn <- (as.character(args[[4]]))
 job.id <- as.numeric(args[[5]])
+
 
 if(thetaU == "thetaU1") {
     indx2 = 1
@@ -195,12 +196,24 @@ for(sim.ind in simulation.ind.set)
         se_y = rep(sqrt(1/ny),M)
         se_xgold = rep(sqrt(1/nx),M)
         
-        ind_filter = which(2*pnorm(-sqrt(nx)*abs(betahat_x))<pthr)
-        ind_filter_2 = which(2*pnorm(-sqrt(nx)*abs(betahat_x))<pthr2)
+        # create a third sample to get ind_filter
+        gamma2 = phi2 = rep(0, M)
+        gamma2[ind1] = rnorm(length(ind1), mean = 0, sd = sqrt(sigma2x))
+        gamma[ind2] = rnorm(length(ind2), mean = 0, sd = sqrt(sigma2x_td))
+        ind2all = ind2
+        ind2 = ind2all[1:floor(length(ind2) * 0.5)]
+        phi2[ind2] = rnorm(length(ind2), mean = 0, sd = sqrt(sigma2u))
+        betax2 = gamma2 + thetaUx*phi2
+        betahat2_x = betax2 + rnorm(M, mean = 0, sd = sqrt(1/nx))
+
+        ind2 = ind2all
+   
+        ind_filter = which(2*pnorm(-sqrt(nx)*abs(betahat2_x))<pthr)
+        ind_filter_2 = which(2*pnorm(-sqrt(nx)*abs(betahat2_x))<pthr2)
         
         numIV = length(ind_filter)
         numIV2 = length(ind_filter_2)
-        weakIV = which(2*pnorm(-sqrt(nx)*abs(betahat_x))<5e-8 & 2*pnorm(-sqrt(nx)*abs(betahat_x))>5e-10)
+        weakIV = which(2*pnorm(-sqrt(nx)*abs(betahat2_x))<5e-8 & 2*pnorm(-sqrt(nx)*abs(betahat2_x))>5e-10)
         weakIV = length(weakIV)
         # calculate the statistics for this simulation setting:
         hertx = sum(betax^2)
@@ -240,7 +253,7 @@ for(sim.ind in simulation.ind.set)
     
     start.time = proc.time()[3]
     
-    care.result = CARE2_boot(gamma.exp = betahat_x, gamma.out = betahat_y, se.exp = se_x, se.out = se_y, nx = nx,ny = ny,pthr = 5e-5, nrep = nrep, random_seeds = 0, correct.method = "rerand",etamean = 0.5,random_start = 0, ind_filter = ind_filter,betax,betay,validIV,invalidIV)
+    care.result = CARE2_boot(gamma.exp = betahat_x, gamma.out = betahat_y, se.exp = se_x, se.out = se_y, nx = nx,ny = ny,pthr = 5e-5, nrep = nrep, random_seeds = 0, correct.method = "gold",etamean = 0.5,random_start = 0, ind_filter = ind_filter_2,betax,betay,validIV,invalidIV)
     care_sim_result[[outj]] = care.result
 
     run.time = c(run.time,proc.time()[3] - start.time)

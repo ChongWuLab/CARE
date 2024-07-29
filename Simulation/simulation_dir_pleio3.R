@@ -22,6 +22,7 @@ library(TwoSampleMR)
 library(MRcML)
 library(truncnorm)
 library(MRAPSS)
+
 library(mvtnorm)
 
 #devtools::install_github("xue-hr/MRcML")
@@ -31,7 +32,7 @@ library(mvtnorm)
 
 #create output:
 save_datdir = getwd()
-save_datdir = paste(save_datdir,"/simRes2/",sep="")
+save_datdir = paste(save_datdir,"/simRes8/",sep="")
 system(paste("mkdir -p ",save_datdir,sep=""))
 
 
@@ -41,11 +42,11 @@ source("mr_lasso_own.R")
 library(Rcpp)
 library(RcppArmadillo)
 
-sourceCpp("CARE_support_measurement_with_CD2.cpp")
+sourceCpp("CARE_support_measurement_with_CD2_2.cpp")
 sourceCpp("CARE_support_measurement_overlap.cpp")
 sourceCpp("cML_support.cpp")
 
-source("CARE_support.R")
+source("CARE_support3.R")
 source("CARE_support2.R") #no correction, to check how bias correction helps
 
 source("cML_support.R")
@@ -87,7 +88,7 @@ if(PropInvalidIn == "Prop1") {
     indx4 = 4
 }
 
-#job.id = 1; indx1 = 1; indx2 = 1; indx3 = 5; indx4 = 4
+#job.id = 1; indx1 = 1; indx2 = 1; indx3 = 2; indx4 = 2
 thetavec = c(0.1, 0.07, 0.03, 0, -0.03,-0.07, -0.1)
 thetaUvec = c(0.3, 0.5)
 Nvec = c(5000, 1e4, 5e4, 1e5, 5e5, 1e6)
@@ -110,9 +111,9 @@ M = 2e5 # Total number of independent SNPs representing the common variants in t
 # Model parameters for effect size distribution
 pi1=0.02*(1-prop_invalid); pi3=0.01
 pi2=0.02*prop_invalid;
-sigma2x = 1e-5
+sigma2x = 1e-4
 sigma2y = 1e-5; sigma2u = 1e-5
-sigma2x_td = 1e-5 - thetaU*thetaUx*sigma2u
+sigma2x_td = 1e-4 - thetaU*thetaUx*sigma2u
 sigma2y_td = 1e-5 - thetaU*thetaUx*sigma2u
 
 print(paste("N", N, "pthr", pthr, "pi1", pi1, "theta", theta, "thetaU", thetaU, "prop_invalid", prop_invalid, "NxNy_ratio", NxNy_ratio))
@@ -173,8 +174,7 @@ for(sim.ind in simulation.ind.set)
         ind2 = ind2all[1:floor(length(ind2) * 0.5)]
         phi[ind2] = rnorm(length(ind2), mean = 0, sd = sqrt(sigma2u))
         
-        #alpha[ind2] = rnorm(length(ind2), mean = 0.015, sd = sqrt(sigma2u))
-        alpha[ind2] = rnorm(length(ind2), mean = 0.015, sd = sqrt(sigma2u)) #try mean = 0.02
+        alpha[ind2] = rnorm(length(ind2), mean = 0.02, sd = sqrt(sigma2u))
         ind2 = ind2all[!ind2all %in% ind2]
         alpha[ind2] = rnorm(length(ind2), mean = 0, sd = sqrt(sigma2y_td))
         

@@ -74,6 +74,8 @@ if(Nin == "N1") {
     indx3 = 2
 } else if (Nin == "N3") {
     indx3 = 3
+} else if (Nin == "N4") {
+    indx3 = 4
 } else if (Nin == "N5") {
     indx3 = 5
 } else if (Nin == "N6") {
@@ -91,7 +93,7 @@ if(PropInvalidIn == "Prop1") {
 #thetavec = c(0.2,0.1, 0.05, 0, -0.05, -0.1, -0.2)
 thetavec = c(0.1, 0.07, 0.03, 0, -0.03,-0.07, -0.1)
 thetaUvec = c(0.3, 0.5)
-Nvec = c(5e4, 8e4, 1e5, 1.5e5, 2.5e5, 5e5, 1e6) # 1:7
+Nvec = c(5000, 1e4, 5e4, 1e5, 5e5, 1e6)
 prop_invalid_vec = c(0.3, 0.5, 0.7)
 
 #temp = as.integer(commandArgs(trailingOnly = TRUE))
