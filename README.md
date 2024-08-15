@@ -29,7 +29,6 @@ We aim to write a separate manuscript that focuses on software and pipeline deve
 - simulation_nonlinear2.R: Generate simulation results for nonlinear X on G with interaction term. 
 - simulation_nonlinear3.R: Generate simulation results for nonlinear Y on X without interaction term.
 - simulation_dir_pleio3.R/simulation_dir_pleio7.R: Generate simulation results for GBIC.
-- simulation_dir_pleio5.R/simulation_dir_pleio6.R: Generate simulation results for three samples under the main setting.
 - simulalation_dir_pleio8.R: Generate simulation results for different sample sizes of SNPs.
 - Support files: CARE_support.R, CARE_support2.R, CARE_support3.R, mr_raps_own.R, mr_lasso_own.R, cML_support.R, CARE_support_measurement_with_CD2.cpp, CARE_support_measurement_with_CD2_2.cpp, CARE_support_measurement_overlap.cpp, cML_support.cpp
 - /pbs: generate lsf files used for parallel computing.
@@ -42,9 +41,11 @@ We aim to write a separate manuscript that focuses on software and pipeline deve
 ### Supplementary figures
 
 - resAna/summarize_simRes_final.R: Generate summary results.
+- resAna/summarize_simRes_final2.R: Generate summary results for GBIC.
+- resAna/summarize_simRes_final_eta.R: Generate summary results for different eta.
 - resAna/simulation_supplementary_figure.R: Reproduce results in Supplementary Figure 1.
-- resAna/simulation_figure2.R: Reproduce results in Supplementary Figure 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13,16,17,18.
-- resAna/simulation_figure3.R: Reproduce results in Supplementary Figure 19, 20, 21, 22, 23.
+- resAna/simulation_figure2.R: Reproduce results in Supplementary Figure 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18, 19.
+- resAna/simulation_figure3.R: Reproduce results in Supplementary Figure 20, 21, 22, 23, 24, 25, 26, 27.
 - resAna/simulation_supplementray_eta_figure.R: Reproduce results in Supplementary Figure 14.
 - resAna/simulation_supplementray_gic_figure.R: Reproduce results in Supplementary Figure 15.
 - resAna/summarize_simRes_computational_time_setting: Generate summary results for running time.
