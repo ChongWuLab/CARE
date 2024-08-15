@@ -3,19 +3,15 @@ library(ggplot2)
 library(ggsci)
 
 #setwd("/Users/cwu18/Dropbox/FSU_research/Undergoing/CARE/JASA-final/simulation-final/summaryRes/")
-setwd("C:\\Users\\Evelyn\\Dropbox\\CARE\\simulation_final_2\\summaryRes\\")
-#setwd("/rsrch5/scratch/biostatistics/wzhang24/CARE/simulation_final_2/summaryRes/")
+setwd("/rsrch5/home/biostatistics/chongwulab/wzhang24/CARE/simulation_final_2/summaryRes/")
 files = list.files(getwd())
-ind = 'simRes1'
-files = files[grepl(ind,files)]
-ind = 'prop_invalid0.5'
-files = files[grepl(ind,files)]
-ind = 'runtime'
-files = files[!grepl(ind,files)]
+#ind = 'simRes1'
+#files = files[grepl(ind,files)]
+#ind = 'prop_invalid0.3'
+#files = files[grepl(ind,files)]
 draw.figure <- function(figureTitle,saveTitle,MSE_trunc =0.003) {
     #parameter:
     #MSE_trunc = 0.003
-    
     out = matrix(NA, length(files),23)
     
     for(j in 1:length(files)) {
@@ -27,6 +23,7 @@ draw.figure <- function(figureTitle,saveTitle,MSE_trunc =0.003) {
         
         tmp = gsub("prop.*","",file)
         tmp = gsub(".*theta","",tmp)
+        tmp = gsub("N.*", "", tmp)
         tmp = as.numeric(tmp)
         out[j,] = c(final.out[,1],tmp)
     }
@@ -37,11 +34,11 @@ draw.figure <- function(figureTitle,saveTitle,MSE_trunc =0.003) {
     
     df = df[,c("MRcML","MRcML_DP","IVW","Weighted_Median","Weighted_Mode","CARE_Efron_BIC","MRAPSS","theta")]
     
-    colnames(df) = c("cML","cML-DP","IVW","Weighted-Median","Weighted-Mode","CARE","MR-APSS","theta")
+    colnames(df) = c("cML","cML-DP","IVW","Weighted-Median","Weighted-Mode","CARE","MRAPSS","theta")
     
     df.plot = df %>% gather(key = Method, value = Power, -theta)
     
-    df.plot[,2] <- factor( df.plot[,2],levels = c("CARE","cML","cML-DP","IVW","Weighted-Median","Weighted-Mode","MR-APSS"))
+    df.plot[,2] <- factor( df.plot[,2],levels = c("CARE","cML","cML-DP","IVW","Weighted-Median","Weighted-Mode","MRAPSS"))
     # Power # Bias
     
     #
@@ -69,6 +66,7 @@ draw.figure <- function(figureTitle,saveTitle,MSE_trunc =0.003) {
         
         tmp = gsub("prop.*","",file)
         tmp = gsub(".*theta","",tmp)
+        tmp = gsub("N.*", "", tmp)
         tmp = as.numeric(tmp)
         out[j,] = c(abs(final.out[,"Bias"]),tmp)
     }
@@ -81,13 +79,13 @@ draw.figure <- function(figureTitle,saveTitle,MSE_trunc =0.003) {
     
     df[,1:7] = abs(df[,1:7])#
     #df = df[df[,"theta"]!=0,]
-    colnames(df) = c("cML","cML-DP","IVW","Weighted-Median","Weighted-Mode","CARE","MR-APSS","theta")
+    colnames(df) = c("cML","cML-DP","IVW","Weighted-Median","Weighted-Mode","CARE","MRAPSS","theta")
     
     df.plot = df %>% gather(key = Method, value = Power, -theta)
     df.plot[df.plot[,3]>1,3] = 1
 
     
-    df.plot[,2] <- factor( df.plot[,2],levels = c("CARE","cML","cML-DP","IVW","Weighted-Median","Weighted-Mode","MR-APSS"))
+    df.plot[,2] <- factor( df.plot[,2],levels = c("CARE","cML","cML-DP","IVW","Weighted-Median","Weighted-Mode","MRAPSS"))
     # Power # Bias
     
     
@@ -113,6 +111,7 @@ draw.figure <- function(figureTitle,saveTitle,MSE_trunc =0.003) {
         
         tmp = gsub("prop.*","",file)
         tmp = gsub(".*theta","",tmp)
+        tmp = gsub("N.*", "", tmp)
         tmp = as.numeric(tmp)
         out[j,] = c(final.out[,"MSE"],tmp)
     }
@@ -122,13 +121,13 @@ draw.figure <- function(figureTitle,saveTitle,MSE_trunc =0.003) {
     
     df = df[,c("MRcML","MRcML_DP","IVW","Weighted_Median","Weighted_Mode","CARE_Efron_BIC","MRAPSS","theta")]
     
-    colnames(df) = c("cML","cML-DP","IVW","Weighted-Median","Weighted-Mode","CARE","MR-APSS","theta")
+    colnames(df) = c("cML","cML-DP","IVW","Weighted-Median","Weighted-Mode","CARE","MRAPSS","theta")
     
     df.plot = df %>% gather(key = Method, value = Power, -theta)
     
     df.plot[df.plot[,"Power"]>MSE_trunc,"Power"] = MSE_trunc
 
-    df.plot[,2] <- factor( df.plot[,2],levels = c("CARE","cML","cML-DP","IVW","Weighted-Median","Weighted-Mode","MR-APSS"))
+    df.plot[,2] <- factor( df.plot[,2],levels = c("CARE","cML","cML-DP","IVW","Weighted-Median","Weighted-Mode","MRAPSS"))
     
     #
     p3 = ggplot(df.plot, aes(x=theta, y=Power, color=Method,group = Method)) +geom_line(aes(linetype = Method)) +  geom_point(aes(shape =Method), size = 1.5, alpha=0.85)  + scale_shape_manual(values =c(2,3,4,5,6,7,8)) +   scale_linetype_manual(values = c('solid', 'dashed', 'dotted', 'dotdash', 'longdash','twodash','solid')) + ylim(0,MSE_trunc) + theme_bw() +
@@ -153,6 +152,7 @@ draw.figure <- function(figureTitle,saveTitle,MSE_trunc =0.003) {
         
         tmp = gsub("prop.*","",file)
         tmp = gsub(".*theta","",tmp)
+        tmp = gsub("N.*", "", tmp)
         tmp = as.numeric(tmp)
         out[j,] = c(final.out[,"Coverage"],tmp)
     }
@@ -162,11 +162,11 @@ draw.figure <- function(figureTitle,saveTitle,MSE_trunc =0.003) {
     
     df = df[,c("MRcML","MRcML_DP","IVW","Weighted_Median","Weighted_Mode","CARE_Efron_BIC","MRAPSS","theta")]
     
-    colnames(df) = c("cML","cML-DP","IVW","Weighted-Median","Weighted-Mode","CARE","MR-APSS","theta")
+    colnames(df) = c("cML","cML-DP","IVW","Weighted-Median","Weighted-Mode","CARE","MRAPSS","theta")
     
     df.plot = df %>% gather(key = Method, value = Power, -theta)
     
-    df.plot[,2] <- factor( df.plot[,2],levels = c("CARE","cML","cML-DP","IVW","Weighted-Median","Weighted-Mode","MR-APSS"))
+    df.plot[,2] <- factor( df.plot[,2],levels = c("CARE","cML","cML-DP","IVW","Weighted-Median","Weighted-Mode","MRAPSS"))
     
     df.plot[df.plot[,3]<=0.6,3] = 0.6
 
@@ -194,6 +194,7 @@ draw.figure <- function(figureTitle,saveTitle,MSE_trunc =0.003) {
         
         tmp = gsub("prop.*","",file)
         tmp = gsub(".*theta","",tmp)
+        tmp = gsub("N.*", "", tmp)
         tmp = as.numeric(tmp)
         out[j,] = c(final.out[,1],tmp)
     }
@@ -237,6 +238,7 @@ draw.figure <- function(figureTitle,saveTitle,MSE_trunc =0.003) {
         
         tmp = gsub("prop.*","",file)
         tmp = gsub(".*theta","",tmp)
+        tmp = gsub("N.*", "", tmp)
         tmp = as.numeric(tmp)
         out[j,] = c(abs(final.out[,"Bias"]),tmp)
     }
@@ -288,6 +290,7 @@ draw.figure <- function(figureTitle,saveTitle,MSE_trunc =0.003) {
         
         tmp = gsub("prop.*","",file)
         tmp = gsub(".*theta","",tmp)
+        tmp = gsub("N.*", "", tmp)
         tmp = as.numeric(tmp)
         out[j,] = c(final.out[,"MSE"],tmp)
     }
@@ -332,6 +335,7 @@ draw.figure <- function(figureTitle,saveTitle,MSE_trunc =0.003) {
         
         tmp = gsub("prop.*","",file)
         tmp = gsub(".*theta","",tmp)
+        tmp = gsub("N.*", "", tmp)
         tmp = as.numeric(tmp)
         out[j,] = c(final.out[,"Coverage"],tmp)
     }
@@ -393,33 +397,36 @@ draw.figure <- function(figureTitle,saveTitle,MSE_trunc =0.003) {
 
 
 
-
-for(simSetting in c("simRes1","simRes2","simRes3","simRes4")) {
-    for (prop in c(0.3,0.5,0.7)) {
-        
-        files = list.files(getwd())
-
-        files = files[grepl(simSetting,files)]
-        files = files[grepl(paste0("prop_invalid",prop),files)]
-        files = files[!grepl("runtime",files)]
-        figureTitle = ""
-
-        draw.figure(figureTitle,paste0(simSetting,"_",prop))
-    }
+simSetting = "simRes13"
+prop = 0.5
+N = "5e+05"
+for (M in c(1e+05)) {
+    M1 = "1e\\+05"
+    files = list.files(getwd())
+    files = files[grepl(simSetting,files)]
+    files = files[grepl(".RData",files)]
+    files = files[grepl(paste0("M", M1),files)]
+    #files = files[grepl(paste0("N", N,  "prop_invalid",prop),files)]
+    figureTitle = ""
+    draw.figure(figureTitle,paste0(simSetting,"_N",N,"_", prop, "_M", M))  
+}
+for (M in c(1e+05)) {
+    M1 = "1e\\+05"
+    files = list.files(getwd())
+    files = files[grepl(simSetting,files)]
+    files = files[grepl(".RData",files)]
+    files = files[grepl(paste0("M", M1),files)]
+    #files = files[grepl(paste0("N", N,  "prop_invalid",prop),files)]
+    figureTitle = ""
+    draw.figure(figureTitle,paste0(simSetting,"_N",N,"_", prop, "_M", M))  
 }
 
-
-
-#for(simSetting in c("simRes5","simRes6","simRes7")) {
-#    for (prop in c(0.5)) {
-#       
-#        files = list.files(getwd())
-#
-#        files = files[grepl(simSetting,files)]
-#        files = files[grepl(paste0("prop_invalid",prop),files)]
-#
-#        figureTitle = ""
-#
-#        draw.figure(figureTitle,paste0(simSetting,"_",prop))
-#    }
-#}
+for (M in c(50000,10000,5000,1000)) {
+    files = list.files(getwd())
+    files = files[grepl(simSetting,files)]
+    files = files[grepl(".RData",files)]
+    files = files[grepl(paste0("M", M),files)]
+    #files = files[grepl(paste0("N", N,  "prop_invalid",prop),files)]
+    figureTitle = ""
+    draw.figure(figureTitle,paste0(simSetting,"_N",N,"_", prop, "_M", M))  
+}

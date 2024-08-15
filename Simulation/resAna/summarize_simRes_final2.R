@@ -1,15 +1,20 @@
 rm(list= ls())
 #library(ggplot2)
 
-summary_fun <- function(theta,prop_invalid,simSetting) {
+summary_fun <- function(theta,N,prop_invalid,simSetting) {
     
     #theta = 0.03
-    #propInvalid = 0.3
-    #simSetting = "simRes1"
-    #setwd(paste0("/rsrch5/scratch/biostatistics/wzhang24/CARE/simulation_final_2/",simSetting))
+    #propInvalid = 0.5
+    #simSetting = "simRes2"
+    setwd(paste0("/rsrch5/home/biostatistics/chongwulab/wzhang24/CARE/simulation_final_2/",simSetting))
     #setwd(paste0("C:\\Users\\Evelyn\\OneDrive - The University of Texas Health Science Center at Houston\\Wu group\\MR\\codes\\simulation-final\\",simSetting))
-    setwd(paste0("C:\\Users\\Evelyn\\Dropbox\\CARE\\simulation_final_2\\",simSetting))
-    ind = paste0("theta",theta,"thetaU0.3prop_invalid",prop_invalid)
+    if (N == 5e+05) {
+      ind1 = "N5e\\+05"
+    } else {
+      ind1 = paste0("N",N)
+    }
+
+    ind2 = paste0("theta",theta,"thetaU0.3prop_invalid",prop_invalid)
 
     care_result = list()
     care_no_result = list()
@@ -23,9 +28,10 @@ summary_fun <- function(theta,prop_invalid,simSetting) {
     MRAPSS_result = list()
     run_time = list()
     settings = list()
-    files = list.files(getwd())
 
-    files = files[grepl(ind,files)]
+    files = list.files(getwd())
+    files = files[grepl(ind1,files)]
+    files = files[grepl(ind2,files)]
     
     # only using sample size = 1e5
     #files = files[grepl("N1",files)]
@@ -92,9 +98,9 @@ summary_fun <- function(theta,prop_invalid,simSetting) {
     #colMeans(care.res)
     #quantile(care2.res[,"MA_BIC.tilde_theta"])
     #which(care2.res[,"MA_BIC.tilde_theta"]>1)
-    #quantile(care2.res[,"AIC.hat_theta"])
+    #quantile(care2.res[,"GIC.hat_theta"])
     #quantile(care2.res[,"BIC.tilde_theta"])
-    #indxtmp = which(care2.res[,"AIC.hat_theta"]>1)
+    #indxtmp = which(care2.res[,"GIC.hat_theta"]>1)
     #care2.res[indxtmp,]
     
     
@@ -166,7 +172,7 @@ summary_fun <- function(theta,prop_invalid,simSetting) {
       if(is.null(MR_Lasso_result[i]$MR_Lasso_result))
       {
         #pval_MR_Lasso = c(pval_MR_Lasso,NA)
-        next()
+        next
       }
       MRLasso[i,] = c(MR_Lasso_result[i]$MR_Lasso_result@Estimate,MR_Lasso_result[i]$MR_Lasso_result@StdError, MR_Lasso_result[i]$MR_Lasso_result@Pvalue)
     }
@@ -189,9 +195,9 @@ summary_fun <- function(theta,prop_invalid,simSetting) {
     # final.out = as.data.frame(matrix(NA,21,7))
     # colnames(final.out) = c("Power","Estimate","Coverage","Bias","MSE","Monte_SD","SD")
     # 
-    # rownames(final.out) = c("MRcML","MRcML_DP","MRmix","IVW","Egger","Weighted_Median","Weighted_Mode","RAPS","ConMix","PRESSO","MRLasso","CARE_MA_AIC","CARE_AIC","CARE_MA_BIC","CARE_BIC","CARE_Efron_AIC","CARE_Efron_BIC","CARE_Efron_MA_AIC","CARE_Efron_MA_BIC","CARE_no_BIC","CARE_no_BIC_Efron")
+    # rownames(final.out) = c("MRcML","MRcML_DP","MRmix","IVW","Egger","Weighted_Median","Weighted_Mode","RAPS","ConMix","PRESSO","MRLasso","CARE_MA_GIC","CARE_GIC","CARE_MA_BIC","CARE_BIC","CARE_Efron_GIC","CARE_Efron_BIC","CARE_Efron_MA_GIC","CARE_Efron_MA_BIC","CARE_no_BIC","CARE_no_BIC_Efron")
     final.out = as.data.frame(matrix(NA,22,7))
-    rownames(final.out) = c("MRcML","MRcML_DP","MRmix","IVW","Egger","Weighted_Median","Weighted_Mode","RAPS","ConMix","PRESSO","MRLasso","CARE_MA_AIC","CARE_AIC","CARE_MA_BIC","CARE_BIC","CARE_Efron_AIC","CARE_Efron_BIC","CARE_Efron_MA_AIC","CARE_Efron_MA_BIC","CARE_no_BIC","CARE_no_BIC_Efron","MRAPSS")
+    rownames(final.out) = c("MRcML","MRcML_DP","MRmix","IVW","Egger","Weighted_Median","Weighted_Mode","RAPS","ConMix","PRESSO","MRLasso","CARE_MA_GIC","CARE_GIC","CARE_MA_BIC","CARE_BIC","CARE_Efron_GIC","CARE_Efron_BIC","CARE_Efron_MA_GIC","CARE_Efron_MA_BIC","CARE_no_BIC","CARE_no_BIC_Efron","MRAPSS")
     colnames(final.out) = c("Power","Estimate","Coverage","Bias","MSE","Monte_SD","SD")
      # power
     final.out[1,1] = sum(MRcML$MRcML_MA_BIC_p < cutoff)/dim(MRcML)[1]
@@ -203,7 +209,7 @@ summary_fun <- function(theta,prop_invalid,simSetting) {
     #final.out[10,1] = sum(PRESSO[,3] < cutoff) / dim(PRESSO)[1]
     final.out[11,1] = sum(MRLasso[,3] < cutoff) / dim(MRLasso)[1]
 
-    final.out[12:19,1] = colSums(care.res[,c("MA_AIC.p","AIC.p","MA_BIC.p","BIC.p","AIC.Efron_p","BIC.Efron_p","MA_AIC.Efron_p","MA_BIC.Efron_p")] < cutoff) / dim(care.res)[1] #c("MA_AIC.p","AIC.p","MA_BIC.p","BIC.p")
+    final.out[12:19,1] = colSums(care.res[,c("MA_GIC.p","GIC.p","MA_BIC.p","BIC.p","GIC.Efron_p","BIC.Efron_p","MA_GIC.Efron_p","MA_BIC.Efron_p")] < cutoff) / dim(care.res)[1] #c("MA_GIC.p","GIC.p","MA_BIC.p","BIC.p")
 
     final.out[20:21,1] = colSums(care2.res[,c("BIC.p","BIC.Efron_p")] < cutoff) / dim(care2.res)[1]
     final.out[22,1] = sum(MRAPSS.res[,"p"] < cutoff) / dim(MRAPSS.res)[1]
@@ -218,7 +224,7 @@ summary_fun <- function(theta,prop_invalid,simSetting) {
     #final.out[10,2] = mean(PRESSO[,1])
     final.out[11,2] = mean(MRLasso[,1])
 
-    final.out[12:19,2] = colMeans(care.res[,c("MA_AIC.tilde_theta","AIC.tilde_theta","MA_BIC.tilde_theta","BIC.tilde_theta","AIC.tilde_theta","BIC.tilde_theta","MA_AIC.tilde_theta","AIC.tilde_theta")])
+    final.out[12:19,2] = colMeans(care.res[,c("MA_GIC.tilde_theta","GIC.tilde_theta","MA_BIC.tilde_theta","BIC.tilde_theta","GIC.tilde_theta","BIC.tilde_theta","MA_GIC.tilde_theta","GIC.tilde_theta")])
 
     final.out[20:21,2] = colMeans(care2.res[,c("BIC.tilde_theta","BIC.tilde_theta")])
     
@@ -240,20 +246,20 @@ summary_fun <- function(theta,prop_invalid,simSetting) {
     #final.out[10,3] = sum(theta > PRESSO[,1] - 1.96 * PRESSO[,2] & theta < PRESSO[,1] + 1.96 * PRESSO[,2]) / dim(PRESSO)[1]
     final.out[11,3] = sum(theta > MRLasso[,1] - 1.96 * MRLasso[,2] & theta < MRLasso[,1] + 1.96 * MRLasso[,2]) / dim(MRLasso)[1]
 
-    final.out[12,3] = sum(theta > care.res[,"MA_AIC.tilde_theta"] - 1.96 * care.res[,"MA_AIC.se"] & theta < care.res[,"MA_AIC.tilde_theta"] + 1.96 * care.res[,"MA_AIC.se"]) / dim(care.res)[1]
+    final.out[12,3] = sum(theta > care.res[,"MA_GIC.tilde_theta"] - 1.96 * care.res[,"MA_GIC.se"] & theta < care.res[,"MA_GIC.tilde_theta"] + 1.96 * care.res[,"MA_GIC.se"]) / dim(care.res)[1]
 
-    final.out[13,3] = sum(theta > care.res[,"AIC.tilde_theta"] - 1.96 * care.res[,"AIC.se"] & theta < care.res[,"AIC.tilde_theta"] + 1.96 * care.res[,"AIC.se"]) / dim(care.res)[1]
+    final.out[13,3] = sum(theta > care.res[,"GIC.tilde_theta"] - 1.96 * care.res[,"GIC.se"] & theta < care.res[,"GIC.tilde_theta"] + 1.96 * care.res[,"GIC.se"]) / dim(care.res)[1]
 
     final.out[14,3] = sum(theta > care.res[,"MA_BIC.tilde_theta"] - 1.96 * care.res[,"MA_BIC.se"] & theta < care.res[,"MA_BIC.tilde_theta"] + 1.96 * care.res[,"MA_BIC.se"]) / dim(care.res)[1]
 
     final.out[15,3] = sum(theta > care.res[,"BIC.tilde_theta"] - 1.96 * care.res[,"BIC.se"] & theta < care.res[,"BIC.tilde_theta"] + 1.96 * care.res[,"BIC.se"]) / dim(care.res)[1]
 
     
-    final.out[16,3] = sum(theta > care.res[,"AIC.tilde_theta"] - 1.96 * care.res[,"AIC.Efron_se"] & theta < care.res[,"AIC.tilde_theta"] + 1.96 * care.res[,"AIC.Efron_se"]) / dim(care.res)[1]
+    final.out[16,3] = sum(theta > care.res[,"GIC.tilde_theta"] - 1.96 * care.res[,"GIC.Efron_se"] & theta < care.res[,"GIC.tilde_theta"] + 1.96 * care.res[,"GIC.Efron_se"]) / dim(care.res)[1]
 
     final.out[17,3] = sum(theta > care.res[,"BIC.tilde_theta"] - 1.96 * care.res[,"BIC.Efron_se"] & theta < care.res[,"BIC.tilde_theta"] + 1.96 * care.res[,"BIC.Efron_se"]) / dim(care.res)[1]
 
-    final.out[18,3] = sum(theta > care.res[,"MA_AIC.tilde_theta"] - 1.96 * care.res[,"MA_AIC.Efron_se"] & theta < care.res[,"MA_AIC.tilde_theta"] + 1.96 * care.res[,"MA_AIC.Efron_se"]) / dim(care.res)[1]
+    final.out[18,3] = sum(theta > care.res[,"MA_GIC.tilde_theta"] - 1.96 * care.res[,"MA_GIC.Efron_se"] & theta < care.res[,"MA_GIC.tilde_theta"] + 1.96 * care.res[,"MA_GIC.Efron_se"]) / dim(care.res)[1]
 
     final.out[19,3] = sum(theta > care.res[,"MA_BIC.tilde_theta"] - 1.96 * care.res[,"MA_BIC.Efron_se"] & theta < care.res[,"MA_BIC.tilde_theta"] + 1.96 * care.res[,"MA_BIC.Efron_se"]) / dim(care.res)[1]
 
@@ -276,7 +282,7 @@ summary_fun <- function(theta,prop_invalid,simSetting) {
     final.out[11,4] = (theta - mean(MRLasso[,1])) #/ theta
 
 
-    final.out[12:19,4] = (theta -  colMeans(care.res[,c("MA_AIC.tilde_theta","AIC.tilde_theta","MA_BIC.tilde_theta","BIC.tilde_theta","AIC.tilde_theta","BIC.tilde_theta","MA_AIC.tilde_theta","AIC.tilde_theta")])) #/ theta
+    final.out[12:19,4] = (theta -  colMeans(care.res[,c("MA_GIC.tilde_theta","GIC.tilde_theta","MA_BIC.tilde_theta","BIC.tilde_theta","GIC.tilde_theta","BIC.tilde_theta","MA_GIC.tilde_theta","GIC.tilde_theta")])) #/ theta
     
     final.out[20:21,4] = (theta -  colMeans(care2.res[,c("BIC.tilde_theta","BIC.tilde_theta")])) #/ theta
     final.out[22,4] = (theta - mean(MRAPSS.res[,1]))
@@ -291,7 +297,7 @@ summary_fun <- function(theta,prop_invalid,simSetting) {
     #final.out[10,5] = mean((PRESSO[,1]-theta)^2)
     final.out[11,5] = mean((MRLasso[,1]-theta)^2)
 
-    final.out[12:19,5] = colMeans((care.res[,c("MA_AIC.tilde_theta","AIC.tilde_theta","MA_BIC.tilde_theta","BIC.tilde_theta","AIC.tilde_theta","BIC.tilde_theta","MA_AIC.tilde_theta","AIC.tilde_theta")] -theta )^2)
+    final.out[12:19,5] = colMeans((care.res[,c("MA_GIC.tilde_theta","GIC.tilde_theta","MA_BIC.tilde_theta","BIC.tilde_theta","GIC.tilde_theta","BIC.tilde_theta","MA_GIC.tilde_theta","GIC.tilde_theta")] -theta )^2)
 
     final.out[20:21,5] = colMeans((care2.res[,c("BIC.tilde_theta","BIC.tilde_theta")] -theta )^2)
     final.out[22, 5] <- mean((MRAPSS.res[, 1] - theta)^2)
@@ -305,7 +311,7 @@ summary_fun <- function(theta,prop_invalid,simSetting) {
     #final.out[10,6] = sd(PRESSO[,1])
     final.out[11,6] = sd(MRLasso[,1])
 
-    final.out[12:19,6] = apply(care.res[,c("MA_AIC.tilde_theta","AIC.tilde_theta","MA_BIC.tilde_theta","BIC.tilde_theta","AIC.tilde_theta","BIC.tilde_theta","MA_AIC.tilde_theta","AIC.tilde_theta")],2,sd)
+    final.out[12:19,6] = apply(care.res[,c("MA_GIC.tilde_theta","GIC.tilde_theta","MA_BIC.tilde_theta","BIC.tilde_theta","GIC.tilde_theta","BIC.tilde_theta","MA_GIC.tilde_theta","GIC.tilde_theta")],2,sd)
 
     final.out[20:21,6] = apply(care2.res[,c("BIC.tilde_theta","BIC.tilde_theta")],2,sd)
     final.out[22,6] <- sd(MRAPSS.res[,1])
@@ -319,13 +325,11 @@ summary_fun <- function(theta,prop_invalid,simSetting) {
     #final.out[10,7] = mean(PRESSO[,"Presso_se"])
     final.out[11,7] = mean(MRLasso[,"MRLasso_se"])
 
-    final.out[12:19,7] = colMeans(care.res[,c("MA_AIC.se","AIC.se","MA_BIC.se","BIC.se","AIC.Efron_se","BIC.Efron_se","MA_AIC.Efron_se","MA_BIC.Efron_se")])
+    final.out[12:19,7] = colMeans(care.res[,c("MA_GIC.se","GIC.se","MA_BIC.se","BIC.se","GIC.Efron_se","BIC.Efron_se","MA_GIC.Efron_se","MA_BIC.Efron_se")])
     
     final.out[20:21,7] = colMeans(care2.res[,c("BIC.se","BIC.Efron_se")])
     final.out[22,7] = mean(MRAPSS.res[,2])
-    #savefile = paste0("/gpfs/research/chongwu/Chong/CARE/Submit/simulation-final/summaryRes/res_",simSetting,"theta",theta,"prop_invalid",propInvalid,".RData")
-    #savefile = paste0("/rsrch5/scratch/biostatistics/wzhang24/CARE/simulation_final_2/summaryRes/",simSetting,"theta",theta,"prop_invalid",prop_invalid,".RData")
-    savefile = paste0("C:\\Users\\Evelyn\\Dropbox\\CARE\\simulation_final_2\\summaryRes\\",simSetting,"theta",theta,"prop_invalid",prop_invalid,".RData")
+    savefile = paste0("/rsrch5/home/biostatistics/chongwulab/wzhang24/CARE/simulation_final_2/summaryRes/",simSetting,"theta",theta,"N", N, "prop_invalid",prop_invalid,".RData")
     save(final.out,setting,run_time, file = savefile)
 }
 
@@ -337,6 +341,82 @@ for (simSetting in c("simRes1","simRes2","simRes3","simRes4")){
         try(summary_fun(theta,prop_invalid,simSetting))
         
         cat("Finish theta", theta, " Prop",prop_invalid,"\n")
+    }
+  }
+}
+
+for (simSetting in c("simRes5")){
+  for(theta in c(0.1,0.07, 0.03, 0, -0.03, -0.07, -0.1)) {
+    for (prop_invalid in c(0.5)) {
+        try(summary_fun(theta,prop_invalid,simSetting))
+        
+        cat("Finish theta", theta, " Prop",prop_invalid,"\n")
+    }
+  }
+}
+
+for (simSetting in c("simRes2")){
+  for(theta in c(0.1,0.07, 0.03, 0, -0.03, -0.07, -0.1)) {
+    for (N in c("5000", "10000", "50000")) {
+      for (prop_invalid in c(0.5)) {
+          try(summary_fun(theta,N, prop_invalid,simSetting))
+          
+          cat("Finish theta", theta, " ", N, " Prop",prop_invalid,"\n")
+      }
+    }
+  }
+}
+
+for (simSetting in c("simRes2")){
+  for(theta in c(0.1,0.07, 0.03, 0, -0.03, -0.07, -0.1)) {
+    for (N in c(5e+05)) {
+      for (prop_invalid in c(0.9)) {
+          try(summary_fun(theta,N, prop_invalid,simSetting))      
+          cat("Finish theta", theta, " ", N, " Prop",prop_invalid,"\n")
+      }
+    }
+  }
+}
+
+for (simSetting in c("simRes6")){
+  for(theta in c(0.1, 0.07, 0.03, 0, -0.03, -0.07, -0.1)) {
+    for (prop_invalid in c(0.5)) {
+        N = 10000
+        try(summary_fun(theta,N, prop_invalid,simSetting))    
+        cat("Finish theta", theta, "  Prop",prop_invalid,"\n")
+    }
+    
+  }
+}
+
+for (simSetting in c("simRes7")){
+  for(theta in c(0.1, 0.07, 0.03, 0, -0.03, -0.07, -0.1)) {
+    for (prop_invalid in c(0.5)) {
+        N = 5e+05
+        try(summary_fun(theta,N, prop_invalid,simSetting))    
+        cat("Finish theta", theta, "  Prop",prop_invalid,"\n")
+    }
+    
+  }
+}
+
+for (simSetting in c("simRes8")){
+  for(theta in c(0.1, 0.07, 0.03, 0, -0.03, -0.07, -0.1)) {
+    for (prop_invalid in c(0.5)) {
+        N = 5e+05
+        try(summary_fun(theta,N, prop_invalid,simSetting))    
+        cat("Finish theta", theta, "  Prop",prop_invalid,"\n")
+    }
+    
+  }
+}
+
+for (simSetting in c("simRes8")){
+  for(theta in c(0.1, 0.07, 0.03, 0, -0.03, -0.07, -0.1)) {
+    for (prop_invalid in c(0.3)) {
+        N = 10000
+        try(summary_fun(theta,N, prop_invalid,simSetting))    
+        cat("Finish theta", theta, "  Prop",prop_invalid,"\n")
     }
   }
 }
