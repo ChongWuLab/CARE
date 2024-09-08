@@ -5,12 +5,6 @@ job.id <- as.numeric(args[[1]])
 # pr
 library(devtools)
 library(withr)
-#withr::with_libpaths(new = "/gpfs/home/cwu3/R/x86_64-redhat-linux-gnu-library/4.1", remotes::install_github("MRCIEU/TwoSampleMR"))
-
-#withr::with_libpaths(new = "/gpfs/home/cwu3/R/x86_64-redhat-linux-gnu-library/4.1", remotes::install_github("mrcieu/gwasvcf"))
-
-#library(TwoSampleMR)
-
 library(data.table)
 library(ieugwasr)
 library(gwasvcf)
@@ -34,6 +28,7 @@ files = files[grepl(".vcf.gz",files)]
 files = files[!grepl(".vcf.gz.tbi",files)]
 
 files2 = gsub(".vcf.gz","",files)
+#existfiles = readRDS("/gpfs/research/chongwu/shared/summary_statistics/IEU_GWAS/converted/finished.rds")
 existfiles = list.files("CARE/summarystats/converted/")
 
 #files = files[!paste0(files2,".txt") %in%existfiles]

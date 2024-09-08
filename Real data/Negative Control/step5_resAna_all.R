@@ -2,7 +2,7 @@ require(TwoSampleMR)
 require(data.table)
 require(dplyr)
 
-dir = '/rsrch5/scratch/biostatistics/wzhang24/CARE/negativecontrol/smmry_res'
+dir = 'CARE/negativecontrol/smmry_res'
 source("Sfig1_qq_plot_inflated_type1.R")
 setwd(dir)
 files = list.files(dir,pattern='.RData')

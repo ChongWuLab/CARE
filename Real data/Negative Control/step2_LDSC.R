@@ -2,19 +2,12 @@ require(readr)
 
 
 construct_mat <- function(pheno1,pheno2,ldsc.refDir=NULL) {
-    
+   
     # add LDSC path to the working directory
-    #command = paste0("PATH=$PATH:",ldsc.dir)
-    #system(command)
-
     if(is.null(ldsc.refDir)) {
         ldsc.refDir ="ldsc/eur_w_ld_chr/"
         warning("This is just local use. Please change this with your own directory.")
     }
-    
-    
-    
-    #export PATH=$PATH:/gpfs/research/chongwu/shared/software/ldsc/ldsc
     
     # save the results for rg, hert, and its standard deviation
     ldsc.res = as.data.frame(matrix(NA,3,2))
