@@ -3,7 +3,7 @@ require(data.table)
 require(dplyr)
 
 
-dir = "/rsrch5/scratch/biostatistics/wzhang24/CARE/covid19/smmry_res"
+dir = "CARE/covid19/smmry_res"
 setwd(dir)
 files = list.files(dir)
 
@@ -166,4 +166,4 @@ CARE.res = CARE.res[!is.na(CARE.res[,1]),]
 MR.res = MR.res[indx,]
 MR.res = MR.res[!is.na(MR.res[,1]),]
 # add the trait information
-save(CARE.res,MR.res,file = "/rsrch5/scratch/biostatistics/wzhang24/CARE/covid19/res_Ana/COVID19_summarized.RData")
+save(CARE.res,MR.res,file = "CARE/covid19/res_Ana/COVID19_summarized.RData")

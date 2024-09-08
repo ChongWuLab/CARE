@@ -3,7 +3,7 @@ library(dplyr)
 library(tidyr)
 # prepare the data
 
-setwd("/rsrch5/scratch/biostatistics/wzhang24/CARE/covid19/res_Ana/")
+setwd("CARE/covid19/res_Ana/")
 load("COVID19_summarized.RData")
 
 

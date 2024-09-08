@@ -2,8 +2,7 @@ library(ggplot2)
 library(dplyr)
 library(tidyr)
 # prepare the data
-#setwd("/Users/uniquechong/Dropbox (Personal)/FSU_research/Undergoing/CARE/RealData/New/Res_Ana/")
-setwd("/rsrch5/scratch/biostatistics/wzhang24/CARE/covid19/res_Ana/")
+setwd("CARE/covid19/res_Ana/")
 load("COVID19_summarized.RData")
 
 # All the used exposures; others are duplicated...
