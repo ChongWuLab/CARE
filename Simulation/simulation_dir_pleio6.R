@@ -1,13 +1,3 @@
-setwd("/rsrch5/home/biostatistics/chongwulab/wzhang24/CARE/simulation_final_2/")
-# Summary level simulations with directional pleiotropy and InSIDE assumption violated
-#rm(list = ls())
-
-#!/usr/bin/env Rscript
-#slurm_arrayid <- Sys.getenv('SLURM_ARRAY_TASK_ID')
-#job.id <- as.numeric(slurm_arrayid)
-
-#library(rapportools)
-#library(TwoSampleMR)
 require(mr.divw)
 require(nleqslv)
 

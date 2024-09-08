@@ -1,9 +1,3 @@
-#setwd("/Users/x/Desktop/CW/CARE/July22_2021")
-# Summary level simulations with directional pleiotropy and InSIDE assumption violated
-#rm(list = ls())
-
-setwd("/rsrch5/home/biostatistics/chongwulab/wzhang24/CARE/simulation_final_2")
-
 require(mr.divw)
 require(nleqslv)
 
