@@ -3,14 +3,6 @@
 Classical MR analyses utilizing summary data may still produce biased causal effect estimates due to the the winner’s curse and pleiotropic issues. To address these two issues and establish valid causal conclusions, we propose a unified robust Mendelian Randomization framework with summary data, which systematically removes the winner’s curse and screens out invalid genetic instruments
 with pleiotropic effects. 
 
-Please cite the following manuscript when using CARE or any codes listed in this repo:
-
-~~~
-Xie, Z., Zhang W., Wang, J. & Wu, C. (2023+). Winner's Curse Free Robust Mendelian Randomization with Summary Data. Submitted.
-~~~
-
-
-
 In this repo, we provide the following sources.
 
 - Simulations folder: the codes for replicating simulation results in the above manuscript
@@ -94,17 +86,7 @@ We aim to write a separate manuscript that focuses on software and pipeline deve
 - resAna/COVID_histgram.R: Reproduce results in Figure 4.
 - resAna/COVID_DataPlots.R: Reproduce results in Figure 5.
 
-
-## Notes
-
-All the above codes are for replication purposes and the users may need to change the directory and install the necessary packages to run it smoothly. If you have any questions, feel free to contact us (Chong Wu, [cwu18@mdanderson.org](mailto:cwu18@mdanderson.org))
-
-
-
 ## Disclaimer
 
 The codes are provided "as is" and the author disclaims all warranties with regard to these codes including all implied warranties of merchantability and fitness. In no event shall the author be liable for any special, direct, indirect, or consequential damages or any damages whatsoever resulting from loss of use, data or profits, whether in an action of contract, negligence or other tortious action, arising out of or in connection with the use or performance of these codes. 
 
-### Author
-
-Zhongming Xie, Wanheng Zhang, Jingshen Wang, and Chong Wu
