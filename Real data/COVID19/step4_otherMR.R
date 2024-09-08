@@ -10,7 +10,7 @@ MR_MRbase <- function(exposure.id, outcome.id, sel.pthr = 5e-8, refpanel=NULL,in
     #exposure.id = "pheno10"
     #outcome.id = "AD_Jansene"
     if(is.null(refpanel)) {
-        refpanel = "/rsrch5/scratch/biostatistics/wzhang24/1000G/1000G.EUR.ALLSNP.QC.CHR"
+        refpanel = "1000G.EUR.ALLSNP.QC.CHR"
         warning("This is just for local use")
     }
     

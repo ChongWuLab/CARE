@@ -2,11 +2,7 @@ require(TwoSampleMR)
 require(data.table)
 require(dplyr)
 
-#dir ="/Users/uniquechong/Dropbox (Personal)/FSU_research/Undergoing/CARE/RealData/COVID19/smmry_res_5e-5cutoff"
-
-#dir = "/gpfs/research/chongwu/Chong/CARE/COVID19/smmry_resR20.001"
-#dir = "/gpfs/research/chongwu/Chong/CARE/COVID19/smmry_res"
-dir = "/rsrch5/scratch/biostatistics/wzhang24/CARE/covid19/smmry_res"
+dir = ""
 setwd(dir)
 files = list.files(dir)
 
@@ -167,24 +163,7 @@ tmp = final.res2[,c("exposure.id","exposure.name")]
 tmp = tmp[!duplicated(tmp[,1]),]
 rownames(tmp) = tmp[,1]
 
-# delete the duplicated:
-#LDL: ebi-a-GCST002222,ieu-a-300, ebi-a-GCST90002412, ieu-b-110 (keep)
-#HDL: ebi-a-GCST002223; ieu-a-299, ieu-b-109 (keep)
-#CAD: ebi-a-GCST003116; ebi-a-GCST005195
-#Depression: ebi-a-GCST003769, ieu-a-1000, ebi-a-GCST005902,
-#Neuroticism: ebi-a-GCST003770,  ebi-a-GCST005327, ebi-a-GCST005232 (keep)
-#sleep duration: ebi-a-GCST006686, ebi-a-GCST003839
-# stroke: ebi-a-GCST006907, ebi-a-GCST006908,ebi-a-GCST006909,ebi-a-GCST006910 , ebi-a-GCST006906
-#osteoarthritis: ebi-a-GCST007091; ebi-a-GCST007090, ebi-a-GCST007092
-#Glaucoma: ebi-a-GCST009722 due to multi-trait analysis
-#snoring: ebi-a-GCST009760-ebi-a-GCST009763
-#covid-19: "ebi-a-GCST010776","ebi-a-GCST010777","ebi-a-GCST010778","ebi-a-GCST010779","ebi-a-GCST010780","ebi-a-GCST010783"
-#Appendicular lean mass: ebi-a-GCST90000025 (keep); ebi-a-GCST90000026; ebi-a-GCST90000027
-#vitamin d: ebi-a-GCST90000615,ebi-a-GCST90000616
-#asthma: ebi-a-GCST005038, ieu-a-44
-# birth weight: ebi-a-GCST007557, ieu-a-1083
-# BMI: ebi-a-GCST006802, ieu-a-2,ukb-b-19953,ebi-a-GCST006368,ieu-b-40
-# type 2 diabetes: ieu-a-1090,ebi-a-GCST006867
+
 remove.duplicated = c("ebi-a-GCST002222","ieu-a-300","ebi-a-GCST002223", "ieu-a-299", "ebi-a-GCST003116","ebi-a-GCST003769","ebi-a-GCST003770","ebi-a-GCST005327","ebi-a-GCST006686","ebi-a-GCST004599",paste0("ebi-a-GCST00",4600:4634),"ebi-a-GCST006907", "ebi-a-GCST006908","ebi-a-GCST006909","ebi-a-GCST006910",paste0("ebi-a-GCST0069",41:52),"ebi-a-GCST007090","ebi-a-GCST007091","ebi-a-GCST009722","ebi-a-GCST009760","ebi-a-GCST009761","ebi-a-GCST009762","ebi-a-GCST009763","ebi-a-GCST010776","ebi-a-GCST010777","ebi-a-GCST010778","ebi-a-GCST010779","ebi-a-GCST010780","ebi-a-GCST010783","ebi-a-GCST90000026","ebi-a-GCST90000027","ebi-a-GCST90000616","ebi-a-GCST90002412","ieu-a-1000","ebi-a-GCST005038","ukb-b-533","ukb-b-1747","ebi-a-GCST007557","ebi-a-GCST006802","ieu-a-2","ukb-b-19953","ebi-a-GCST005920","ebi-a-GCST005921","ebi-a-GCST005923","ebi-a-GCST006696","ebi-a-GCST006697","ebi-a-GCST006698","ebi-a-GCST006699","ebi-a-GCST006670","ebi-a-GCST006671","ebi-a-GCST006672","ebi-a-GCST006804","ieu-a-1090","ebi-a-GCST005840","ebi-a-GCST005841","ebi-a-GCST005842","ebi-a-GCST005843","ieu-a-1109","ebi-a-GCST006478","ieu-a-1007","ieu-a-814","ieu-a-965","ebi-a-GCST006368","ebi-a-GCST006099","ebi-a-GCST006100","ebi-a-GCST006061","ieu-a-1058","ieu-a-1239")
 
 tmp =tmp[!tmp[,1] %in% remove.duplicated,]
@@ -292,14 +271,6 @@ p <- ggplot(df, aes(x = boxOdds, y = reorder(boxLabels,-Pval))) +
 
 
 
-#ebi-a-GCST002222: LDL
-# ebi-a-GCST002223: HDL
-#ebi-a-GCST003116: Coronary artery disease
-# ebi-a-GCST003769: Depression
-# ebi-a-GCST003770: Neuroticism
-
-
-
 final.res2[final.res2[,6]<0.01,c(1:3,6)]
 
 tmp = final.res2[grepl("B2_all_eur_V6",final.res2[,1]),]
@@ -309,28 +280,12 @@ tmp[tmp$adjusted<0.2,]
 
 final.res2[grepl("ebi-a-GCST010776",final.res2[,1]),]
 
-# remove the results from the following:
-# ieu-a-814, ieu-a-1058; ieu-a-85; ieu-a-86; ieu-a-90; ieu-a-91
 
 indx = final.res[,"Trait"]
-#indx = grepl("ieu-a-814",indx)  | grepl("ieu-a-90",indx) | grepl("ieu-a-85",indx) | grepl("ieu-a-86",indx) |grepl("ieu-a-91",indx)|grepl("ieu-a-92",indx) | grepl("ieu-a-1239",indx) | grepl("ieu-a-836",indx) | grepl("ebi-a-GCST006098",indx) | grepl("ebi-a-GCST006097",indx)
 
 indx =  grepl("ieu-a-1239",indx) | grepl("ieu-a-1058",indx) #| grepl("ieu-a-1096",indx)  | grepl("ieu-a-814",indx) | grepl("ieu-a-836",indx)
 
 indx = !indx
-
-#ieu-a-814 Ischaemic stroke due to too small sample size: |grepl("ieu-a-1058",indx)
-
-#ieu-a-1058 Celiac disease
-
-#ieu-a-90 Obesity class 1
-#ieu-a-91 Obesity class 2
-#ieu-a-92 Obesity class 3
-
-#ieu-a-1239 Years of schooling
-#ieu-a-836 College completion
-
-#ebi-a-GCST006098, ebi-a-GCST006097: all based on UKB; delete them
 
 
 final.res = final.res[indx,]

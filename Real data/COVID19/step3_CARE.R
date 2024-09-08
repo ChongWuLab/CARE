@@ -8,7 +8,7 @@ CARE_MRbase <- function(exposure.id, outcome.id, refpanel=NULL, etamean = 0.5, s
     dir.create(tmpdir)
     
     if(is.null(refpanel)) {
-        refpanel = "/rsrch5/scratch/biostatistics/wzhang24/1000G/1000G.EUR.ALLSNP.QC.CHR"
+        refpanel = "1000G.EUR.ALLSNP.QC.CHR"
         warning("This is just for local use")
     }
     
