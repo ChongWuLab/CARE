@@ -28,7 +28,6 @@ files = files[grepl(".vcf.gz",files)]
 files = files[!grepl(".vcf.gz.tbi",files)]
 
 files2 = gsub(".vcf.gz","",files)
-#existfiles = readRDS("/gpfs/research/chongwu/shared/summary_statistics/IEU_GWAS/converted/finished.rds")
 existfiles = list.files("CARE/summarystats/converted/")
 
 #files = files[!paste0(files2,".txt") %in%existfiles]
