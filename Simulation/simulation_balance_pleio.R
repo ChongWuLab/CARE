@@ -1,12 +1,3 @@
-#setwd("/Users/x/Desktop/CW/CARE/July22_2021")
-# Summary level simulations with directional pleiotropy and InSIDE assumption violated
-#rm(list = ls())
-
-#setwd("C:\\Users\\Evelyn\\OneDrive - The University of Texas Health Science Center at Houston\\Wu group\\MR\\codes\\simulation-final\\")
-#!/usr/bin/env Rscript
-#slurm_arrayid <- Sys.getenv('SLURM_ARRAY_TASK_ID')
-#job.id <- as.numeric(slurm_arrayid)
-#library(rapportools)
 print('currently working on: simRes3.')
 require(mr.divw)
 require(nleqslv)
