@@ -4,17 +4,11 @@ require(readr)
 construct_mat <- function(pheno1,pheno2,ldsc.refDir=NULL) {
     
     # add LDSC path to the working directory
-
-    #ldsc.dir = "/gpfs/research/chongwu/shared/software/ldsc/ldsc"
     #command = paste0("PATH=$PATH:",ldsc.dir)
     #system(command)
-    
-    #pheno1 = "AD_Jansene"
-    #pheno2 = "pheno69"
-    
-    #
+
     if(is.null(ldsc.refDir)) {
-        ldsc.refDir ="/gpfs/research/chongwu/shared/software/ldsc/eur_w_ld_chr/"
+        ldsc.refDir ="ldsc/eur_w_ld_chr/"
         warning("This is just local use. Please change this with your own directory.")
     }
     
