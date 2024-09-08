@@ -114,15 +114,3 @@ construct_mat <- function(pheno1,pheno2,ldsc.refDir=NULL) {
     out = list(cov = cov,ldsc.res = ldsc.res)
     return(out)
 }
-### Test
-#idp1 = "Kunkle_etal_Stage1_results.txt"
-#idp1tmp = "tmpout"
-#command = paste0("munge_sumstats.py --sumstats ",idp1, " --out ",idp1tmp," --merge-alleles ",ldsc.refDir, "w_hm3.snplist --N 63926") #Kunkle_etal_Stage1_results.txt
-#system(command)
-
-#idp1tmp = paste0(idp1tmp,".sumstats.gz")
-#output = "tmpout2"
-#command <- paste("ldsc.py --h2 ", idp1tmp, "  --ref-ld-chr ",ldsc.refDir," --w-ld-chr ",ldsc.refDir," --out ", output, sep = "")
-
-#system(command)
-## finish

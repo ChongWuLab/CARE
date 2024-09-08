@@ -23,13 +23,8 @@ exposure.name <- as.character(args[[2]])
 # prepare the data
 tryCatch({
     
-    ieu_gwas_info = readRDS("/rsrch5/scratch/biostatistics/wzhang24/CARE/negativecontrol/IEU_GWAS_info.rds")
-    
-    
-    #outcome_id = ieu_gwas_info[grepl("ukb",ieu_gwas_info[,1]),]
-    #exposure_id = ieu_gwas_info[!grepl("ukb",ieu_gwas_info[,1]),]
-    #outcome_id = outcome_id[!outcome_id[,"id"] %in% c("ukb-b-10787","ukb-b-19953","ukb-d-1747_6"),] #only use hair color and tanning;,"ukb-b-533"
-    
+    ieu_gwas_info = readRDS("IEU_GWAS_info.rds")
+
     smmry_dir = "/rsrch5/scratch/biostatistics/wzhang24/CARE/summarystats/converted/"
 
     outcome.sumstats = paste0(smmry_dir,outcome.name,".txt")

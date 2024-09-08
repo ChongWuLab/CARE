@@ -1,16 +1,7 @@
 require(data.table)
 
 
-read_GWAS <- function(sumstats,outname, Ninput = NULL) {
-    
-    #sumstats = "/gpfs/research/chongwu/shared/summary_statistics/IEU_GWAS/converted/ieu-a-300.txt"
-    #outname = "ieu-a-300"
-    #Ninput = 173082
-    
-    #sumstats = "/gpfs/research/chongwu/shared/summary_statistics/AD/IGAP_RV/Kunkle_etal_Stage1_results.txt"
-    #outname = "AD_Jansene"
-    #hapmapfile = "/gpfs/research/chongwu/shared/software/ldsc/w_hm3.snplist"
-    
+read_GWAS <- function(sumstats,outname, Ninput = NULL) {   
     if (grepl(".txt",sumstats)) {
         raw = fread(sumstats)
         raw = as.data.frame(raw)

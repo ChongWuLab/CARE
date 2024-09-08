@@ -61,9 +61,6 @@ save.filejudge = paste0(exposure.name,"_",outcome.name,".RData")
 if(save.filejudge %in% finished.jobs) {
     cat("This job has already been finished previously. \n")
 } else {
-    # create results directory:
-    #exposure.name = "ebi-a-GCST005920"
-    #outcome.name = "ukb-d-1747_1"
     workdir = paste0(main.dir,"/prepared_sumstats/",exposure.name,"_",outcome.name)
     
     setwd(workdir)
