@@ -16,7 +16,7 @@ We aim to write a separate manuscript that focuses on software and pipeline deve
 - simulation_dir_pleio.R: Generate simulation results for the main setting.
 - simulation_dir_pleio2.R: Generate simulation results for uniform distributed effects for alpha.
 - simulation_balance_pleio.R: Generate simulation results for balanced horizontal pleiotropy with InSIDE assumption satisfied.
-- simulation_balance_pleio2.R: Generate simulation results for directional horizontal pleiotropy wih InSIDE assumption violated.
+- simulation_balance_pleio2.R: Generate simulation results for balanced horizontal pleiotropy wih InSIDE assumption violated.
 - simulation_nonlinear.R: Generate simulation results for nonlinear X on G without interaction term. 
 - simulation_nonlinear2.R: Generate simulation results for nonlinear X on G with interaction term. 
 - simulation_nonlinear3.R: Generate simulation results for nonlinear Y on X without interaction term.
