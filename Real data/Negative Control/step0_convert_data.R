@@ -26,7 +26,7 @@ library(mr.divw)
 
 set_bcftools()
 
-setwd("/rsrch5/scratch/biostatistics/wzhang24/CARE/summarystats/")
+setwd("CARE/summarystats/")
 
 files = list.files()
 
@@ -34,8 +34,7 @@ files = files[grepl(".vcf.gz",files)]
 files = files[!grepl(".vcf.gz.tbi",files)]
 
 files2 = gsub(".vcf.gz","",files)
-#existfiles = readRDS("/gpfs/research/chongwu/shared/summary_statistics/IEU_GWAS/converted/finished.rds")
-existfiles = list.files("/rsrch5/scratch/biostatistics/wzhang24/CARE/summarystats/converted/")
+existfiles = list.files("CARE/summarystats/converted/")
 
 #files = files[!paste0(files2,".txt") %in%existfiles]
 
@@ -55,7 +54,7 @@ if(paste0(out.id,".txt") %in% existfiles) {
 
     outcome_dat = as.data.frame(outcome_dat)
 
-    outputfile = paste0("/rsrch5/scratch/biostatistics/wzhang24/CARE/summarystats/converted/",out.id,".txt")
+    outputfile = paste0("CARE/summarystats/converted/",out.id,".txt")
 
     out_dat = outcome_dat[,c("seqnames","start","ID","ALT","REF","ES","SE","AF","SS")]
 
