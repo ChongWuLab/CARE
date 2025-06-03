@@ -31,7 +31,7 @@ library(mvtnorm)
 
 #create output:
 save_datdir = getwd()
-save_datdir = paste(save_datdir,"/simRes10/",sep="")
+save_datdir = paste(save_datdir,"/simRes16/",sep="")
 system(paste("mkdir -p ",save_datdir,sep=""))
 
 
@@ -57,7 +57,6 @@ Nin <- (as.character(args[[3]]))
 PropInvalidIn <- (as.character(args[[4]]))
 job.id <- as.numeric(args[[5]])
 
-
 if(thetaU == "thetaU1") {
     indx2 = 1
 } else {
@@ -76,7 +75,10 @@ if(Nin == "N1") {
     indx3 = 5
 } else if (Nin == "N6") {
     indx3 = 6
+} else if (Nin == "N7") {
+    indx3 = 7
 }
+
 
 if(PropInvalidIn == "Prop1") {
     indx4 = 1
@@ -91,7 +93,7 @@ if(PropInvalidIn == "Prop1") {
 #job.id = 1; indx1 = 1; indx2 = 1; indx3 = 5; indx4 = 4
 thetavec = c(0.1, 0.07, 0.03, 0, -0.03,-0.07, -0.1)
 thetaUvec = c(0.3, 0.5)
-Nvec = c(5000, 1e4, 5e4, 1e5, 5e5, 1e6)
+Nvec = c(5e4, 8e4, 1e5, 1.5e5, 2.5e5, 5e5, 1e6)
 prop_invalid_vec = c(0.3, 0.5, 0.7, 0.9)
 
 #temp = as.integer(commandArgs(trailingOnly = TRUE))
@@ -196,24 +198,12 @@ for(sim.ind in simulation.ind.set)
         se_y = rep(sqrt(1/ny),M)
         se_xgold = rep(sqrt(1/nx),M)
         
-        # create a third sample to get ind_filter
-        gamma2 = phi2 = rep(0, M)
-        gamma2[ind1] = rnorm(length(ind1), mean = 0, sd = sqrt(sigma2x))
-        gamma[ind2] = rnorm(length(ind2), mean = 0, sd = sqrt(sigma2x_td))
-        ind2all = ind2
-        ind2 = ind2all[1:floor(length(ind2) * 0.5)]
-        phi2[ind2] = rnorm(length(ind2), mean = 0, sd = sqrt(sigma2u))
-        betax2 = gamma2 + thetaUx*phi2
-        betahat2_x = betax2 + rnorm(M, mean = 0, sd = sqrt(1/nx))
-
-        ind2 = ind2all
-   
-        ind_filter = which(2*pnorm(-sqrt(nx)*abs(betahat2_x))<pthr)
-        ind_filter_2 = which(2*pnorm(-sqrt(nx)*abs(betahat2_x))<pthr2)
+        ind_filter = which(2*pnorm(-sqrt(nx)*abs(betahat_x))<pthr)
+        ind_filter_2 = which(2*pnorm(-sqrt(nx)*abs(betahat_x))<pthr2)
         
         numIV = length(ind_filter)
         numIV2 = length(ind_filter_2)
-        weakIV = which(2*pnorm(-sqrt(nx)*abs(betahat2_x))<5e-8 & 2*pnorm(-sqrt(nx)*abs(betahat2_x))>5e-10)
+        weakIV = which(2*pnorm(-sqrt(nx)*abs(betahat_x))<5e-8 & 2*pnorm(-sqrt(nx)*abs(betahat_x))>5e-10)
         weakIV = length(weakIV)
         # calculate the statistics for this simulation setting:
         hertx = sum(betax^2)
@@ -232,7 +222,7 @@ for(sim.ind in simulation.ind.set)
         names(sim.setting) = c("nIV","nWeakIV","hertX","hertY","Kapp","KappSel","F","varX","varY")
 
         tmpj = tmpj + 1
-        cat('numIV:', numIV,'numIV2:',numIV2,'\n')
+        #cat('numIV:', numIV,'numIV2:',numIV2,'\n')
         
     }
     
@@ -253,7 +243,7 @@ for(sim.ind in simulation.ind.set)
     
     start.time = proc.time()[3]
     
-    care.result = CARE2_boot(gamma.exp = betahat_x, gamma.out = betahat_y, se.exp = se_x, se.out = se_y, nx = nx,ny = ny,pthr = pthr2, nrep = nrep, random_seeds = 0, correct.method = "gold",etamean = 0.5,random_start = 0, ind_filter = ind_filter,betax,betay,validIV,invalidIV)
+    care.result = CARE2_boot(gamma.exp = betahat_x, gamma.out = betahat_y, se.exp = se_x, se.out = se_y, nx = nx,ny = ny,pthr = 5e-5, nrep = nrep, random_seeds = 0, correct.method = "rerand",etamean = 0.5,random_start = 0, ind_filter = ind_filter,betax,betay,validIV,invalidIV)
     care_sim_result[[outj]] = care.result
 
     run.time = c(run.time,proc.time()[3] - start.time)
