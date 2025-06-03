@@ -13,15 +13,20 @@ We aim to write a separate manuscript that focuses on software and pipeline deve
 
 
 ## Simulation
-- simulation_dir_pleio.R: Generate simulation results for the main setting.
-- simulation_dir_pleio2.R: Generate simulation results for uniform distributed effects for alpha.
+- simulation_dir_pleio2.R: Generate simulation results for the main setting.
+- simulation_dir_pleio.R: Generate simulation results for uniform distributed effects for alpha.
 - simulation_balance_pleio.R: Generate simulation results for balanced horizontal pleiotropy with InSIDE assumption satisfied.
 - simulation_balance_pleio2.R: Generate simulation results for balanced horizontal pleiotropy wih InSIDE assumption violated.
 - simulation_nonlinear.R: Generate simulation results for nonlinear X on G without interaction term. 
 - simulation_nonlinear2.R: Generate simulation results for nonlinear X on G with interaction term. 
 - simulation_nonlinear3.R: Generate simulation results for nonlinear Y on X without interaction term.
 - simulation_dir_pleio3.R/simulation_dir_pleio7.R: Generate simulation results for GBIC.
+- simulation_dir_pleio4.R: Different sample sizes.
+- simulation_dir_pleio5.R: Third sample under the main setting. P cutoff = 5e-5 for all methods
+- simulation_dir_pleio7.R: Different eta under the main setting.
 - simulalation_dir_pleio8.R: Generate simulation results for different sample sizes of SNPs.
+- simulation_dir_pleio9.R: Comparison of l0, and two l1 algorithms under the main setting.
+- simulation_dir_pleio10.R: P cutoff = 5e-5 for other methods.
 - Support files: CARE_support.R, CARE_support2.R, CARE_support3.R, mr_raps_own.R, mr_lasso_own.R, cML_support.R, CARE_support_measurement_with_CD2.cpp, CARE_support_measurement_with_CD2_2.cpp, CARE_support_measurement_overlap.cpp, cML_support.cpp
 - /pbs: generate lsf files used for parallel computing.
 
