@@ -28,7 +28,6 @@ We aim to write a separate manuscript that focuses on software and pipeline deve
 - simulation_addition/simulation_dir_pleio9.R: Comparison of l0, and two l1 algorithms under the main setting.
 - Simulation/simulation_dir_pleio10.R: P cutoff = 5e-5 for other methods.
 - Support files: CARE_support.R, CARE_support2.R, CARE_support3.R, mr_raps_own.R, mr_lasso_own.R, cML_support.R, CARE_support_measurement_with_CD2.cpp, CARE_support_measurement_with_CD2_2.cpp, CARE_support_measurement_overlap.cpp, cML_support.cpp
-- /pbs: generate lsf files used for parallel computing.
 
 ### Figure 2 (Main setting)
 - resAna/summarize_simRes_final.R: Generate summary results.
