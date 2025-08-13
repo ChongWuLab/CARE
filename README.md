@@ -28,7 +28,6 @@ We aim to write a separate manuscript that focuses on software and pipeline deve
 - simulation_addition/simulation_dir_pleio9.R: Comparison of l0, and two l1 algorithms under the main setting.
 - Simulation/simulation_dir_pleio10.R: P cutoff = 5e-5 for other methods.
 - Support files: CARE_support.R, CARE_support2.R, CARE_support3.R, mr_raps_own.R, mr_lasso_own.R, cML_support.R, CARE_support_measurement_with_CD2.cpp, CARE_support_measurement_with_CD2_2.cpp, CARE_support_measurement_overlap.cpp, cML_support.cpp
-- /pbs: generate lsf files used for parallel computing.
 
 ### Figure 2 (Main setting)
 - resAna/summarize_simRes_final.R: Generate summary results.
@@ -82,12 +81,11 @@ We aim to write a separate manuscript that focuses on software and pipeline deve
 - http://covid19hg.org/results/r7/
 
 #### Prepare data
-- step0a_download_IEUGWAS.R: Download exposures from IEU-GWAS.
-- step0b_convert_data.R: Convert raw data to txt files.
+- step0_convert_data.R: Convert downloaded raw data to txt files.
 - step1_process_GWAS.R: Pre-processing and quality control codes for GWAS summary data. This is a very useful in-house code to pre-process GWAS data. If you use this for other purposes, please cite this paper.
 
 #### Analysis
-- MR_pipeline_v6.R: Main codes for applying CARE and other MR methods for analysis.
+- MR_pipeline_V6.R: Main codes for applying CARE and other MR methods for analysis.
 - resAna/resAna_step1_all_summarized_COVID19.R: Generate summary results for analysis use.
 - COVID19_summarized.RData contains the results from resAna_step1_all_summarized_COVID19.R.
 
@@ -96,7 +94,7 @@ We aim to write a separate manuscript that focuses on software and pipeline deve
 - resAna/COVID_DataPlots.R: Reproduce results in Figure 5.
 
 #### Support files  
-- step3_CARE.R, step4_otherMR.R, step5_resAna_final.R.
+- step3_CARE.R, step4_otherMR.R.
 - CARE_support.R, CARE_support.cpp, CARE_support_measurement_with_CD2.cpp, CARE_support_measurement_with_CD2.cpp, cML_support.R, mr_raps_own.R, mr_lasso_own.R
 
 ## Disclaimer
