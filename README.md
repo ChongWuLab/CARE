@@ -96,7 +96,7 @@ We aim to write a separate manuscript that focuses on software and pipeline deve
 - resAna/COVID_DataPlots.R: Reproduce results in Figure 5.
 
 #### Support files  
-- step3_CARE.R, step4_otherMR.R, step5_resAna_final.R.
+- step3_CARE.R, step4_otherMR.R.
 - CARE_support.R, CARE_support.cpp, CARE_support_measurement_with_CD2.cpp, CARE_support_measurement_with_CD2.cpp, cML_support.R, mr_raps_own.R, mr_lasso_own.R
 
 ## Disclaimer
