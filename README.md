@@ -87,6 +87,7 @@ We aim to write a separate manuscript that focuses on software and pipeline deve
 - step1_process_GWAS.R: Pre-processing and quality control codes for GWAS summary data. This is a very useful in-house code to pre-process GWAS data. If you use this for other purposes, please cite this paper.
 
 #### Analysis
+- MR_pipeline_v6.R: Main codes for applying CARE and other MR methods for analysis.
 - resAna/resAna_step1_all_summarized_COVID19.R: Generate summary results for analysis use.
 - COVID19_summarized.RData contains the results from resAna_step1_all_summarized_COVID19.R.
 
