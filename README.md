@@ -6,7 +6,7 @@ with pleiotropic effects.
 In this repo, we provide the following sources.
 
 - Simulations folder: the codes for replicating simulation results in the above manuscript
-- RealData folder: the codes for replicating real data results in the above manuscript
+- Real Data folder: the codes for replicating real data results in the above manuscript
 
 We aim to write a separate manuscript that focuses on software and pipeline development. The codes provided here (especially under the RealData folder) can provide a good template for experts using our new methods. The users may need to specify the working directory and install relevant packages to run it smoothly.
 
@@ -42,9 +42,9 @@ We aim to write a separate manuscript that focuses on software and pipeline deve
 - Simulation/resAna/summarize_simRes_final_eta.R: Generate summary results for different eta.
 - simulation_addition/resAna/summarize_simRes_final.R: Generate summary results for comparison of l0 and two l1 algorithms under the main setting.
 - Simulation/resAna/simulation_supplementary_figure.R: Reproduce results in Supplementary Figure 1.
-- Simulation/resAna/simulation_figure2.R: Reproduce results in Supplementary Figure 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18, 19, 28.
-- Simulation/resAna/simulation_figure3.R: Reproduce results in Supplementary Figure 20, 21, 22, 23, 24, 25, 26, 27.
-- Simulation/resAna/simulation_figure4.R: Reproduce results in Supplementary Figure 29, 30.
+- Simulation/resAna/simulation_figure2.R: Reproduce results in Supplementary Figure 1-3, 5-13, 16-19, 28.
+- Simulation/resAna/simulation_figure3.R: Reproduce results in Supplementary Figure 20-27.
+- Simulation/resAna/simulation_figure4.R: Reproduce results in Supplementary Figure 29-30.
 - Simulation/resAna/simulation_supplementray_eta_figure.R: Reproduce results in Supplementary Figure 14.
 - Simulation/resAna/simulation_supplementray_gic_figure.R: Reproduce results in Supplementary Figure 15.
 - simulation_addition/resAna/simulation_figure.R: Reproduce results in Supplementary Figure 29, 30
@@ -73,7 +73,7 @@ We aim to write a separate manuscript that focuses on software and pipeline deve
 
 #### Support files
 
-- CARE_support.R, cML_support.R, mr_raps_own.R, CARE_support.cpp, CARE_support_measurement_with_CD2.cpp, Sfig1_qq_plot_inflated_type1.
+- CARE_support.R, cML_support.R, mr_raps_own.R, CARE_support.cpp, CARE_support_measurement_with_CD2.cpp, Sfig1_qq_plot_inflated_type1.R.
 - exposure_list.csv: All the exposures used in this study.
 
 ### COVID-19 Severity
