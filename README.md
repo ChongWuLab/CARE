@@ -73,7 +73,7 @@ We aim to write a separate manuscript that focuses on software and pipeline deve
 
 #### Support files
 
-- CARE_support.R, cML_support.R, mr_raps_own.R, CARE_support.cpp, CARE_support_measurement_with_CD2.cpp, Sfig1_qq_plot_inflated_type1.
+- CARE_support.R, cML_support.R, mr_raps_own.R, CARE_support.cpp, CARE_support_measurement_with_CD2.cpp, Sfig1_qq_plot_inflated_type1.R.
 - exposure_list.csv: All the exposures used in this study.
 
 ### COVID-19 Severity
