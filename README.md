@@ -95,6 +95,10 @@ We aim to write a separate manuscript that focuses on software and pipeline deve
 - resAna/COVID_histgram.R: Reproduce results in Figure 4.
 - resAna/COVID_DataPlots.R: Reproduce results in Figure 5.
 
+#### Support files  
+- step3_CARE.R, step4_otherMR.R, step5_resAna_final.R.
+- CARE_support.R, CARE_support.cpp, CARE_support_measurement_with_CD2.cpp, CARE_support_measurement_with_CD2.cpp, cML_support.R, mr_raps_own.R, mr_lasso_own.R
+
 ## Disclaimer
 
 The codes are provided "as is" and the author disclaims all warranties with regard to these codes including all implied warranties of merchantability and fitness. In no event shall the author be liable for any special, direct, indirect, or consequential damages or any damages whatsoever resulting from loss of use, data or profits, whether in an action of contract, negligence or other tortious action, arising out of or in connection with the use or performance of these codes. 
