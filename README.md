@@ -5,8 +5,8 @@ with pleiotropic effects.
 
 In this repo, we provide the following sources.
 
-- Simulations folder: the codes for replicating simulation results in the above manuscript
-- Real Data folder: the codes for replicating real data results in the above manuscript
+- Simulations/ and simulation_addition/: the codes for replicating simulation results in the above manuscript
+- Real data/: the codes for replicating real data results in the above manuscript
 
 We aim to write a separate manuscript that focuses on software and pipeline development. The codes provided here (especially under the RealData folder) can provide a good template for experts using our new methods. The users may need to specify the working directory and install relevant packages to run it smoothly.
 
@@ -64,7 +64,7 @@ We aim to write a separate manuscript that focuses on software and pipeline deve
 
 #### Analysis 
 
-- MR_pipeline.R: Main codes for applying CARE and other MR methods for analysis.
+- MR_pipeline_part1.R & MR_pipeline_part2.R: Main codes for applying CARE and other MR methods for analysis.
 
 #### Generate results
 
