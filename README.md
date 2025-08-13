@@ -82,8 +82,7 @@ We aim to write a separate manuscript that focuses on software and pipeline deve
 - http://covid19hg.org/results/r7/
 
 #### Prepare data
-- step0a_download_IEUGWAS.R: Download exposures from IEU-GWAS.
-- step0b_convert_data.R: Convert raw data to txt files.
+- step0_convert_data.R: Convert downloaded raw data to txt files.
 - step1_process_GWAS.R: Pre-processing and quality control codes for GWAS summary data. This is a very useful in-house code to pre-process GWAS data. If you use this for other purposes, please cite this paper.
 
 #### Analysis
