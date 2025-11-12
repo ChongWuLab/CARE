@@ -1,5 +1,9 @@
 # CARE
 
+## News
+The manuscirpt has been accepted by *Journal of the American Statistical Association*. We also provide the corresponding software MRcare at [https://chongwulab.github.io/MRcare/](https://chongwulab.github.io/MRcare/).
+
+## Introduction
 Classical MR analyses utilizing summary data may still produce biased causal effect estimates due to the the winner’s curse and pleiotropic issues. To address these two issues and establish valid causal conclusions, we propose a unified robust Mendelian Randomization framework with summary data, which systematically removes the winner’s curse and screens out invalid genetic instruments
 with pleiotropic effects. 
 
